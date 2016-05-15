@@ -36,6 +36,8 @@ rm -f -- "$ERRCOND"  # this may have been left over from an earlier, broken test
 # This must be done prior to our cleanup() definition, or it will be overwritten.
 . $ASSERTSH
 
+hook_cleanup () { :; }  # Override this in your config.sh if your tests have to do additional cleanup work.
+
 # Load the project-specific test configuration, if present.
 [ -r "$CONFIGSH" ] && . $CONFIGSH
 
@@ -90,6 +92,7 @@ cleanup () {
 	# and placed additional files there, it should remove them itself
 	# (or better, add them to the CLEANUP_FILES list).
 
+	hook_cleanup
 	[ -n "$TMPSH"   -a -f "$TMPSH"   ] && rm --one-file-system -v   -- "$TMPSH"
 	[ -n "$ERRCOND" -a -f "$ERRCOND" ] && rm --one-file-system -v   -- "$ERRCOND"
 	[ -n "$CLEANUP_FILES"            ] && rm --one-file-system -vfd -- $CLEANUP_FILES
