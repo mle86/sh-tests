@@ -66,13 +66,15 @@ prepare_subshell () {
 	[ -n "$TMPSH" ] && rm -v "$TMPSH"  # delete earlier subshell file (in case of multiple calls)
 	TMPSH="$(mktemp --tmpdir="$DIR" 'tmp.subshell.XXXXXX.sh')"
 
-	echo "#!/bin/sh" > $TMPSH
-	echo "export IN_SUBSHELL=yes" >> $TMPSH
-	echo ". \$ASSERTSH" >> $TMPSH
-	echo "cleanup () { :; }" >> $TMPSH
-	echo "success () { :; }" >> $TMPSH
-	echo "[ -r \"\$CONFIGSH\" ] && . \$CONFIGSH" >> $TMPSH
-	cat >> $TMPSH
+	cat >$TMPSH <<ZTMPSH
+#!/bin/sh
+export IN_SUBSHELL=yes
+. \$ASSERTSH
+cleanup () { :; }  # subshells don't need to do any cleanup
+success () { :; }  # subshells cannot finish the test successfully
+[ -r \"\$CONFIGSH\" ] && . \$CONFIGSH  # load project test configuration
+ZTMPSH
+	cat >> $TMPSH  # append function input, i.e. the actuall subshell script content
 	chmod +x $TMPSH
 
 	export SHELL="$TMPSH"
