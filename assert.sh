@@ -18,10 +18,6 @@ color_normal='[0m'
 
 
 
-# If this file was sourced by init.sh, that script will overwrite cleanup() soon with its own implementation.
-# But if we're running inside a subshell, we don't need any cleanup, so we'll just leave this empty function.
-cleanup () { :; }
-
 # abort()
 #  If this is called from a test script, we should simply call cleanup and exit.
 #  But if this is called from a subshell, we should signal the error condition to the test script running outside!

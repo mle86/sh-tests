@@ -69,6 +69,8 @@ prepare_subshell () {
 	echo "#!/bin/sh" > $TMPSH
 	echo "export IN_SUBSHELL=yes" >> $TMPSH
 	echo ". \$ASSERTSH" >> $TMPSH
+	echo "cleanup () { :; }" >> $TMPSH
+	echo "success () { :; }" >> $TMPSH
 	echo "[ -r \"\$CONFIGSH\" ] && . \$CONFIGSH" >> $TMPSH
 	cat >> $TMPSH
 	chmod +x $TMPSH
