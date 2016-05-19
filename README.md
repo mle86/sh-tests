@@ -86,6 +86,19 @@ exiting with a return status of 99.
 	against *expectedOctalMode*.
 
 
+# Project configuration
+
+If your project needs some extra configuration for all or most of its tests,
+create a file called *config.sh* in the same directory as the test scripts.
+*init.sh* will automatically source that file if it exists.
+
+This is the place to define additional helper variables and functions used across multiple tests,
+override hook functions,
+and to build custom assertion functions.
+If most of your tests run the same binary,
+it might be handy to define a variable with the binary's path in the *config.sh* file.
+
+
 # Helper variables
 
 *init.sh* also provides these environment variables:
