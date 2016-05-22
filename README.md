@@ -158,7 +158,14 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 * `prepare_subshell`
 	\
-	**TODO**
+	Prepares a subshell script and points the TMPSH and SHELL env vars to it.
+	The subshell will always have *IN_SUBSHELL=yes* set
+	and will always source the assert.sh and config.sh files (if present).
+	It can use all assertion functions, including *fail()*,
+	but should not need to use *success()* or *cleanup()*.
+	Pipe the subshell script contents to this function.
+	\
+	See "[Using subshells](#using-subshells)".
 
 
 # Hook functions
@@ -171,7 +178,27 @@ Override them in your test script or in your *config.sh* as necessary.
 
 # Using subshells
 
-**TODO**
+To test a command which runs another command,
+the usual approach is to have a helper script and supply that as the subcommand.
+If the subcommand script should be able to perform its own *assert.sh* assertions,
+it'll have to include that file by itself (the path is available in the *$ASSERTSH* env var).
+
+The test framework offers the *prepare_subshell()* function to aid this process:
+The function will create a new, randomly-named script file,
+fill it with some initialization calls,
+and append its *stdin* input.
+
+Initialization done by all subshell scripts created by *prepare_subshell()*:
+1. Sets env var *IN_SUBSHELL=yes*,
+1. includes the *assert.sh* script so that all assertion functions are available, as well as *fail()* and *err()*,
+1. redefines *cleanup()* and *success()*, as they should not do anything inside a subshell,
+1. includes the *config.sh* script (if it exists).
+
+The filname of the new script file is stored in the *$TMPSH* and *$SHELL* env vars.
+This can be useful to test commands which don't take a subcommand argument but simply start a new interactive shell.
+
+*prepare_subshell()* requires a prior *cd_tmpdir()* call,
+because it'll refuse to create the subshell script in the test root.
 
 
 # Author

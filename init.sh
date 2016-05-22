@@ -56,11 +56,11 @@ cd_tmpdir () {
 }
 
 prepare_subshell () {
-	# Prepares a subshell script and points the SHELL env var to it.
-	# The subshell will always have IN_SUBSHELL=yes
+	# Prepares a subshell script and points the TMPSH and SHELL env vars to it.
+	# The subshell will always have IN_SUBSHELL=yes set
 	# and will always source the assert.sh and config.sh files (if present).
 	# It can use all assertion functions, including fail(),
-	# but should not need to use success().
+	# but should not need to use success() or cleanup().
 	# Pipe the subshell script contents to this function.
 
 	[ -z "$DIR" ] && fail "TEST ERROR: Call cd_tmpdir() before using prepare_subshell()!"
