@@ -63,6 +63,8 @@ prepare_subshell () {
 	# but should not need to use success().
 	# Pipe the subshell script contents to this function.
 
+	[ -z "$DIR" ] && fail "TEST ERROR: Call cd_tmpdir() before using prepare_subshell()!"
+
 	[ -n "$TMPSH" ] && rm -v "$TMPSH"  # delete earlier subshell file (in case of multiple calls)
 	TMPSH="$(mktemp --tmpdir="$DIR" 'tmp.subshell.XXXXXX.sh')"
 
