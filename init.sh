@@ -73,7 +73,7 @@ prepare_subshell () {
 export IN_SUBSHELL=yes
 . \$ASSERTSH
 cleanup () { :; }  # subshells don't need to do any cleanup
-success () { :; }  # subshells cannot finish the test successfully
+success () { exit 0; }  # don't report success yet, just return to the test script
 [ -r \"\$CONFIGSH\" ] && . \$CONFIGSH  # load project test configuration
 ZTMPSH
 	cat >> $TMPSH  # append function input, i.e. the actuall subshell script content
