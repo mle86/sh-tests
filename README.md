@@ -180,6 +180,14 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 	but does NOT abort the test script.
 	Use it if you want to print multi-line error messages before calling *fail()*.
 
+* `skip [errorMessage]`
+	\
+	This function prints an error message in yellow on *stderr*
+	and stops the test script,
+	but with exit status zero (success).
+	Use this, for example, if a precondition of your test script was not met
+	and you don't consider that an actual test failure.
+
 * `cd_tmpdir`
 	\
 	Creates a temporary directory to work in and changes into it.

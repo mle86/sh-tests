@@ -13,6 +13,7 @@ ASSERTCMDOUTPUT=
 # ANSI color constants. Used by init.sh functions too.
 color_info='[1;37m'
 color_success='[1;32m'
+color_skip='[1;33m'
 color_error='[1;31m'
 color_normal='[0m'
 

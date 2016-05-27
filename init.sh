@@ -80,6 +80,7 @@ touch -- "$SUBSHELL_MARKER"
 . \$ASSERTSH
 cleanup () { :; }  # subshells don't need to do any cleanup
 success () { exit 0; }  # don't report success yet, just return to the test script
+skip    () { exit 0; }  # don't show the skip message, just return to the test script
 [ -r \"\$CONFIGSH\" ] && . \$CONFIGSH  # load project test configuration
 ZTMPSH
 	cat >> $TMPSH  # append function input, i.e. the actuall subshell script content
@@ -93,6 +94,16 @@ success () {
 	# to signal the successful test to the user.
 
 	echo "${color_success}Success: ${TESTNAME}${color_normal}"
+	cleanup
+	exit 0
+}
+
+# skip [errorMessage]
+#  This function stops the test script execution, but exits with success status.
+#  Also, the abort message is not printed in red (the "error color"), but in yellow.
+skip () {
+	[ -n "$1" ] && echo "${color_skip}""$@""${color_normal}"  >&2
+	echo "${color_skip}Skipped: ${TESTNAME}${color_normal}"  >&2
 	cleanup
 	exit 0
 }
