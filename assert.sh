@@ -7,7 +7,7 @@
 # if an assertion fails or fail() or abort() are called.
 EXIT_ASSERT=99
 
-# The last stdout output of the assertCmd() command.
+# The stdout output of the last assertCmd() command.
 ASSERTCMDOUTPUT=
 
 # ANSI color constants. Used by init.sh functions too.
