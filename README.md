@@ -190,6 +190,7 @@ and append its *stdin* input.
 
 Initialization done by all subshell scripts created by *prepare_subshell()*:
 1. Sets env var *IN_SUBSHELL=yes*,
+1. creates a randomized marker file so that *assertSubshellWasExecuted()* will succeed,
 1. includes the *assert.sh* script so that all assertion functions are available, as well as *fail()* and *err()*,
 1. redefines *cleanup()* and *success()*, as they should not do anything inside a subshell,
 1. includes the *config.sh* script (if it exists).

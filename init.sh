@@ -27,6 +27,7 @@ DIR=  # The temporary working directory, which should be deleted by cleanup() la
 TMPSH=  # The subshell script path (see prepare_subshell).
 IN_SUBSHELL=  # This flag will be set to 'yes' for subshells by prepare_subshell().
 CLEANUP_FILES=  # Additional files and empty directories to delete. Separate with spaces. Be careful, they'll be deleted with "rm -fd".
+SUBSHELL_MARKER=  # Marker file, will be placed in $DIR by all subshell scripts when it executed.
 
 
 rm -f -- "$ERRCOND"  # this may have been left over from an earlier, broken test 
@@ -68,9 +69,14 @@ prepare_subshell () {
 	[ -n "$TMPSH" ] && rm -v "$TMPSH"  # delete earlier subshell file (in case of multiple calls)
 	TMPSH="$(mktemp --tmpdir="$DIR" 'tmp.subshell.XXXXXX.sh')"
 
+	# Leave a marker file as soon as the script gets executed.
+	# assertSubshellWasExecuted() checks the existence of this file.
+	SUBSHELL_MARKER="$(mktemp -u --tmpdir="$DIR" 'subshell-executed_XXXXXX')"
+
 	cat >$TMPSH <<ZTMPSH
 #!/bin/sh
 export IN_SUBSHELL=yes
+touch -- "$SUBSHELL_MARKER"
 . \$ASSERTSH
 cleanup () { :; }  # subshells don't need to do any cleanup
 success () { exit 0; }  # don't report success yet, just return to the test script
@@ -99,10 +105,12 @@ cleanup () {
 	# (or better, add them to the CLEANUP_FILES list).
 
 	hook_cleanup
-	[ -n "$TMPSH"   -a -f "$TMPSH"   ] && rm --one-file-system -v   -- "$TMPSH"
-	[ -n "$ERRCOND" -a -f "$ERRCOND" ] && rm --one-file-system -v   -- "$ERRCOND"
-	[ -n "$CLEANUP_FILES"            ] && rm --one-file-system -vfd -- $CLEANUP_FILES
-	[ -n "$DIR"     -a -d "$DIR"     ] && rm --one-file-system -vd  -- "$DIR"
+	[ -n "$TMPSH"   -a -f "$TMPSH"                   ] && rm --one-file-system -v   -- "$TMPSH"
+	[ -n "$ERRCOND" -a -f "$ERRCOND"                 ] && rm --one-file-system -v   -- "$ERRCOND"
+	[ -n "$CLEANUP_FILES"                            ] && rm --one-file-system -vfd -- $CLEANUP_FILES
+	[ -n "$SUBSHELL_MARKER" -a -f "$SUBSHELL_MARKER" ] && rm --one-file-system -v   -- "$SUBSHELL_MARKER"
+
+	[ -n "$DIR" -a -d "$DIR" ] && rm --one-file-system -vd -- "$DIR"
 
 	:;  # if none of the previous conditions was true, this function should still succeed
 }
