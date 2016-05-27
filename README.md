@@ -34,6 +34,33 @@ Starting 00-test-compile...
 Success: 00-test-compile
 ```
 
+# Package structure
+
+Test scripts only need to source the *init.sh* file to be operational.
+The *assert.sh* file will be sourced automatically.
+
+The *init.sh* and *assert.sh* framework scripts need to be located
+in the same directory as the test script(s),
+but symlinks to them work fine.
+
+(*init.sh* must be sourced from the test script to be able to define new variables and functions.
+In some shells, e.g. *dash*, sourced scripts have no way of knowing their own path,
+so they cannot call other files in the same directory --
+unless of course they can rely on their caller living in the same directory,
+in which case they can get that directory from `$0`.)
+
+The *run-all-tests.sh* script executes all files in the script's directory
+that match the filename pattern
+`??-test-*.sh`.
+The files are run in whichever order the shell glob expansion returns,
+which should be lexicographic order.
+\
+It aborts immediately if one of the test script fails.
+If all test scripts were run successfully,
+it prints a green
+"All tests executed successfully"
+line and ends.
+
 
 # Assertion functions
 
