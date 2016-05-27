@@ -180,7 +180,7 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 	but does NOT abort the test script.
 	Use it if you want to print multi-line error messages before calling *fail()*.
 
-* `cd_tempdir`
+* `cd_tmpdir`
 	\
 	Creates a temporary directory to work in and changes into it.
 	(Also changes *ERRCOND* to point into the new directory, so we don't clutter the test root with them.)
