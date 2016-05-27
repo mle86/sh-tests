@@ -207,6 +207,36 @@ This can be useful to test commands which don't take a subcommand argument but s
 because it'll refuse to create the subshell script in the test root.
 
 
+## Subshell example
+
+This test script tests whether *bash* is installed,
+whether bash supports the *-c* option to run arbitrary commands,
+and whether bash correctly increments the *$SHLVL* counter by 1.
+
+```sh
+#!/bin/sh
+. $(dirname "$0")/init.sh
+
+export SHLVL=1
+
+cd_tmpdir
+prepare_subshell <<EOT
+  assertEq "\$SHLVL" 2  "bash executed the subshell script, but did not correctly increment the SHLVL counter!"
+EOT
+
+# The subshell script's filename is now stored in $TMPSH.
+# Try to run 'bash -c subshell', verify that it terminates with exit status zero.
+assertCmd "bash -c $TMPSH"
+
+# If 'bash -c' did not actually work correctly but still exited with a zero status,
+# then assertCmd() did not notice anything amiss.
+# Verify that the subshell script has been executed at least once:
+assertSubshellWasExecuted
+
+success
+```
+
+
 # Author
 
 Maximilian Eul
