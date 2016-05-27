@@ -160,3 +160,11 @@ Override them in your test script or in your *config.sh* as necessary.
 
 **TODO**
 
+
+# Author
+
+Maximilian Eul
+\<[maximilian@eul.cc](mailto:maximilian@eul.cc)\>
+
+https://github.com/mle86/sh-tests
+
