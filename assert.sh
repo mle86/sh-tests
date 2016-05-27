@@ -171,3 +171,13 @@ assertFileMode () {
 	assertCmdEq "stat --format='%a' '$fileName'" "$expectedOctalMode" "$errorMessage"
 }
 
+# assertSubshellWasExecuted [errorMessage]
+#  This assertion checks whether the last subshell script created via prepare_subshell() has been executed.
+#  It does so by checking the existence of the marker file which the subshell script should have created.
+assertSubshellWasExecuted () {
+	local errorMessage="${1:-"Subshell script was not executed! (Marker file not found.)"}"
+	[ -n "$SUBSHELL_MARKER" ] || fail "Could not check subshell execution, prepare_subshell() was not used"
+	[ -e "$SUBSHELL_MARKER" ] || fail "$errorMessage"
+	:;
+}
+

@@ -85,6 +85,11 @@ exiting with a return status of 99.
 	(as printed by '*stat -c %a*', e.g. '*755*')
 	against *expectedOctalMode*.
 
+* `assertSubshellWasExecuted [errorMessage]`
+	\
+	This assertion checks whether the last subshell script created via *prepare_subshell()* has been executed.
+	It does so by checking the existence of the marker file which the subshell script should have created.
+
 
 # Project configuration
 
