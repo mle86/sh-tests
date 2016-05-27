@@ -53,8 +53,7 @@ The *run-all-tests.sh* script executes all files in the script's directory
 that match the filename pattern
 `??-test-*.sh`.
 The files are run in whichever order the shell glob expansion returns,
-which should be lexicographic order.
-\
+which should be lexicographic order.  
 It aborts immediately if one of the test script fails.
 If all test scripts were run successfully,
 it prints a green
@@ -70,8 +69,7 @@ If they fail, they will print an error message detailing the failure
 and abort the test script,
 exiting with a return status of 99.
 
-* `assertCmd [-v] command [expectedReturnStatus=0]`
-	\
+* `assertCmd [-v] command [expectedReturnStatus=0]`  
 	Tries to run a command and checks its return status.
 	The command's *stdout* output will be saved in *$ASSERTCMDOUTPUT*,
 	and won't be visible (unless the *-v* option is present).
@@ -82,38 +80,31 @@ exiting with a return status of 99.
 	(except 127 and 128, those are still considered a failure,
 	because they usually signify a shell command invocation error).
 
-* `assertEq valueActual valueExpected [errorMessage]`
-	\
+* `assertEq valueActual valueExpected [errorMessage]`  
 	This assertion compares two strings and tests them for equality.
 
-* `assertEmpty valueActual [errorMessage]`
-	\
+* `assertEmpty valueActual [errorMessage]`  
 	This assertion tests a string, expecting it to be empty.
 
-* `assertCmdEq command expectedOutput [errorMessage]`
-	\
+* `assertCmdEq command expectedOutput [errorMessage]`  
 	This assertion is a combination of *assertCmd*+*assertEq*.
 	It executes a command, then compares its entire *stdout* output against *expectedOutput*.
 	The command is expected to always have a return status of zero.
 
-* `assertCmdEmpty command [errorMessage]`
-	\
+* `assertCmdEmpty command [errorMessage]`  
 	This assertion is a combination of *assertCmd*+*assertEmpty*.
 	It executes a command, then compares its entire *stdout* output against the empty string.
 	The command is expected to always have a return status of zero.
 
-* `assertFileSize fileName expectedSize [errorMessage]`
-	\
+* `assertFileSize fileName expectedSize [errorMessage]`  
 	This assertion checks than a file exists and compares its total size (in bytes) against *expectedSize*.
 
-* `assertFileMode fileName expectedOctalMode [errorMessage]`
-	\
+* `assertFileMode fileName expectedOctalMode [errorMessage]`  
 	This assertion checks that a file exists and compares its octal access mode
 	(as printed by '*stat -c %a*', e.g. '*755*')
 	against *expectedOctalMode*.
 
-* `assertSubshellWasExecuted [errorMessage]`
-	\
+* `assertSubshellWasExecuted [errorMessage]`  
 	This assertion checks whether the last subshell script created via *prepare_subshell()* has been executed.
 	It does so by checking the existence of the marker file which the subshell script should have created.
 
@@ -135,16 +126,13 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 *init.sh* also provides these environment variables:
 
-* **$THIS**, the full path of the currently-running test script.
-	\
+* **$THIS**, the full path of the currently-running test script.  
 	Example: `/home/mle/project-x/test/00-test-compile.sh`
 
-* **$TESTNAME**, the current test script name (without its *.sh* suffix).
-	\
+* **$TESTNAME**, the current test script name (without its *.sh* suffix).  
 	Example: `00-test-compile`
 
-* **$HERE**, the directory where the current test script is located.
-	\
+* **$HERE**, the directory where the current test script is located.  
 	Example: `/home/mle/project-x/test`
 
 * **$ASSERTSH**, the full path of the *assert.sh* script file, which has already been sourced by *init.sh*.
@@ -158,53 +146,46 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 *init.sh* also provides these helper functions:
 
-* `success`
-	\
+* `success`  
 	This function prints a green "*Success: $TESTNAME*" line,
 	performs some cleanup,
 	and ends the test script with exit status zero.
 	Call it at the end of every test script!
 
-* `fail errorMessage`
+* `fail errorMessage`  
 	This function prints an error message in red on *stderr*,
 	performs some cleanup,
 	and ends the test script with exit status 99.
-	This can be used for one-line mini-assertions:
-	\
+	This can be used for one-line mini-assertions:  
 	`[ -x binfile ] || fail "binfile not found or not executable!"`
 
-* `err errorMessage`
-	\
+* `err errorMessage`  
 	This function prints an error message in red on *stderr*
 	(like *fail()*),
 	but does NOT abort the test script.
 	Use it if you want to print multi-line error messages before calling *fail()*.
 
-* `skip [errorMessage]`
-	\
+* `skip [errorMessage]`  
 	This function prints an error message in yellow on *stderr*
 	and stops the test script,
 	but with exit status zero (success).
 	Use this, for example, if a precondition of your test script was not met
 	and you don't consider that an actual test failure.
 
-* `cd_tmpdir`
-	\
+* `cd_tmpdir`  
 	Creates a temporary directory to work in and changes into it.
 	(Also changes *ERRCOND* to point into the new directory, so we don't clutter the test root with them.)
 	Use this if your test script wants to create some files/directories.
 	The temporary directory will be automatically removed when the test script ends,
 	provided it is empty.
 
-* `prepare_subshell`
-	\
+* `prepare_subshell`  
 	Prepares a subshell script and points the TMPSH and SHELL env vars to it.
 	The subshell will always have *IN_SUBSHELL=yes* set
 	and will always source the assert.sh and config.sh files (if present).
 	It can use all assertion functions, including *fail()*,
 	but should not need to use *success()* or *cleanup()*.
-	Pipe the subshell script contents to this function.
-	\
+	Pipe the subshell script contents to this function.  
 	See "[Using subshells](#using-subshells)".
 
 
@@ -229,6 +210,7 @@ fill it with some initialization calls,
 and append its *stdin* input.
 
 Initialization done by all subshell scripts created by *prepare_subshell()*:
+
 1. Sets env var *IN_SUBSHELL=yes*,
 1. creates a randomized marker file so that *assertSubshellWasExecuted()* will succeed,
 1. includes the *assert.sh* script so that all assertion functions are available, as well as *fail()* and *err()*,
