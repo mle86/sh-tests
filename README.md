@@ -137,10 +137,6 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 * **$ASSERTSH**, the full path of the *assert.sh* script file, which has already been sourced by *init.sh*.
 
-* **$CLEANUP_FILES**, additional files which the test script wants to be deleted after the test finished.
-	Is empty by default.
-	Separate with spaces. Be careful, they'll be deleted with "*rm -fd*".
-
 
 # Helper functions
 
