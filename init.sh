@@ -84,7 +84,7 @@ touch -- "$SUBSHELL_MARKER"
 cleanup () { :; }  # subshells don't need to do any cleanup
 success () { exit 0; }  # don't report success yet, just return to the test script
 skip    () { exit 0; }  # don't show the skip message, just return to the test script
-[ -r \"\$CONFIGSH\" ] && . \$CONFIGSH  # load project test configuration
+[ -r "\$CONFIGSH" ] && . \$CONFIGSH  # load project test configuration
 ZTMPSH
 	cat >> $TMPSH  # append function input, i.e. the actuall subshell script content
 	chmod +x $TMPSH
