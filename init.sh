@@ -73,6 +73,9 @@ prepare_subshell () {
 	# assertSubshellWasExecuted() checks the existence of this file.
 	SUBSHELL_MARKER="$(mktemp -u --tmpdir="$DIR" 'subshell-executed_XXXXXX')"
 
+	# Make sure this marker file will get deleted later.
+	CLEANUP_FILES="$CLEANUP_FILES $SUBSHELL_MARKER"
+
 	cat >$TMPSH <<ZTMPSH
 #!/bin/sh
 export IN_SUBSHELL=yes
@@ -116,10 +119,9 @@ cleanup () {
 	# (or better, add them to the CLEANUP_FILES list).
 
 	hook_cleanup
-	[ -n "$TMPSH"   -a -f "$TMPSH"                   ] && rm --one-file-system -v   -- "$TMPSH"
-	[ -n "$ERRCOND" -a -f "$ERRCOND"                 ] && rm --one-file-system -v   -- "$ERRCOND"
-	[ -n "$CLEANUP_FILES"                            ] && rm --one-file-system -vfd -- $CLEANUP_FILES
-	[ -n "$SUBSHELL_MARKER" -a -f "$SUBSHELL_MARKER" ] && rm --one-file-system -v   -- "$SUBSHELL_MARKER"
+	[ -n "$TMPSH"   -a -f "$TMPSH"   ] && rm --one-file-system -v   -- "$TMPSH"
+	[ -n "$ERRCOND" -a -f "$ERRCOND" ] && rm --one-file-system -v   -- "$ERRCOND"
+	[ -n "$CLEANUP_FILES"            ] && rm --one-file-system -vfd -- $CLEANUP_FILES
 
 	[ -n "$DIR" -a -d "$DIR" ] && rm --one-file-system -vd -- "$DIR"
 
