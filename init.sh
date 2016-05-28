@@ -128,3 +128,12 @@ cleanup () {
 	:;  # if none of the previous conditions was true, this function should still succeed
 }
 
+# add_cleanup filename...
+#  Adds one or more filenames to the $CLEANUP_FILES list.
+#  Use this if your test script creates files in the temporary directory
+#  which should be automatically deleted as soon as the test script ends.
+#  Be careful, they'll be deleted with "rm -fd" and must not contain spaces.
+add_cleanup () {
+	[ -n "$1" ] && CLEANUP_FILES="$CLEANUP_FILES $@"
+}
+

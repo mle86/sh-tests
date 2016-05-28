@@ -188,13 +188,19 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 	Pipe the subshell script contents to this function.  
 	See "[Using subshells](#using-subshells)".
 
+* `add_cleanup filename...`  
+	Adds one or more filenames to the $CLEANUP_FILES list.
+	Use this if your test script creates files in the temporary directory
+	which should be automatically deleted as soon as the test script ends.
+	Be careful, they'll be deleted with "rm -fd" and must not contain spaces.
+
 
 # Hook functions
 
 All available hook functions are empty stub functions defined in *init.sh*.
 Override them in your test script or in your *config.sh* as necessary.
 
-* **hook_cleanup()**, called on cleanup, i.e. when the test script ends (either because of a failed assertion or because it called *success()*). Use this instead of *$CLEANUP_FILES* if your test script needs to do some serious cleanup, especially if it might need to remove files with spaces in their names (which would not be safe for the space-delimited *$CLEANUP_FILES* list).
+* **hook_cleanup()**, called on cleanup, i.e. when the test script ends (either because of a failed assertion or because it called *success()*). Use this instead of *add_cleanup()* if your test script needs to do some serious cleanup, especially if it might need to remove files with spaces in their names (which would not be safe for *add_cleanup()*, as its *$CLEANUP_FILES* list is space-delimited).
 
 
 # Using subshells
