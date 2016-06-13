@@ -118,6 +118,22 @@ assertEq () {
 	fi
 }
 
+# assertContains valueActual valueExpectedPart [errorMessage]
+#  This assertion compares two strings,
+#  expecting the second to be contained somewhere in the first.
+assertContains () {
+	local valueActual="$1"
+	local valueExpectedPart="$2"
+	local errorMessage="${3:-"Substring assertion failed!"}"
+	case "$valueActual" in
+		*"$valueExpectedPart"*) true ;;  # ok
+		*)
+			err "$errorMessage"
+			err "(Expected '$valueExpectedPart' is not contained in '$valueActual')"
+			abort ;;
+	esac
+}
+
 # assertEmpty valueActual [errorMessage]
 #  This assertion tests a string, expecting it to be empty.
 assertEmpty () {

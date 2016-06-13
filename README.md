@@ -34,6 +34,7 @@ Starting 00-test-compile...
 Success: 00-test-compile
 ```
 
+
 # Package structure
 
 Test scripts only need to source the *init.sh* file to be operational.
@@ -82,6 +83,10 @@ exiting with a return status of 99.
 
 * `assertEq valueActual valueExpected [errorMessage]`  
 	This assertion compares two strings and tests them for equality.
+
+* `assertContains valueActual valueExpectedPart [errorMessage]`  
+	This assertion compares two strings,
+	expecting the second to be contained somewhere in the first.
 
 * `assertEmpty valueActual [errorMessage]`  
 	This assertion tests a string, expecting it to be empty.

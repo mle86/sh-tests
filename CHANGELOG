@@ -1,3 +1,6 @@
+v1.2, 2016-06-13
+	- added assertContains() fn
+
 v1.1, 2016-05-28
 	- added add_cleanup() helper fn
 	- support multiple prepare_subshell() calls per test
