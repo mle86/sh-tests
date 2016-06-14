@@ -74,7 +74,7 @@ prepare_subshell () {
 	SUBSHELL_MARKER="$(mktemp -u --tmpdir="$DIR" 'subshell-executed_XXXXXX')"
 
 	# Make sure this marker file will get deleted later.
-	CLEANUP_FILES="$CLEANUP_FILES $SUBSHELL_MARKER"
+	add_cleanup "$SUBSHELL_MARKER"
 
 	cat >$TMPSH <<ZTMPSH
 #!/bin/sh
