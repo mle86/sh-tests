@@ -52,7 +52,7 @@ fail () {
 #  expectedReturnStatus can be any number (0..255),
 #  or the special value 'any', in which case
 #  all return status values will be accepted
-#  (except 127 and 128, those are still considered a failure,
+#  (except 126 and 127, those are still considered a failure,
 #  because they usually signify a shell command invocation error).
 assertCmd () {
 
