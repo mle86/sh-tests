@@ -86,7 +86,7 @@ success () { exit 0; }  # don't report success yet, just return to the test scri
 skip    () { exit 0; }  # don't show the skip message, just return to the test script
 [ -r "\$CONFIGSH" ] && . \$CONFIGSH  # load project test configuration
 ZTMPSH
-	cat >> $TMPSH  # append function input, i.e. the actuall subshell script content
+	cat >> $TMPSH  # append function input, i.e. the actual subshell script content
 	chmod +x $TMPSH
 
 	export SHELL="$TMPSH"
