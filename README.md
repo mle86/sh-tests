@@ -37,8 +37,8 @@ Success: 00-test-compile
 
 # Package structure
 
-Test scripts only need to source the *init.sh* file to be operational.
-The *assert.sh* file will be sourced automatically.
+Test scripts only need to source the *[init.sh](init.sh)* file to be operational.
+The *[assert.sh](assert.sh)* file will be sourced automatically.
 
 The *init.sh* and *assert.sh* framework scripts need to be located
 in the same directory as the test script(s),
@@ -50,7 +50,7 @@ so they cannot call other files in the same directory --
 unless of course they can rely on their caller living in the same directory,
 in which case they can get that directory from `$0`.)
 
-The *run-all-tests.sh* script executes all files in the script's directory
+The *[run-all-tests.sh](run-all-tests.sh)* script executes all files in the script's directory
 that match the filename pattern
 `??-test-*.sh`.
 The files are run in whichever order the shell glob expansion returns,

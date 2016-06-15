@@ -1,4 +1,4 @@
-v1.3, 2016-06-14
+v1.3, 2016-06-15
 	- self-tests
 	- fix assertCmd() doc
 
