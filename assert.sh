@@ -69,13 +69,13 @@ assertCmd () {
 
 	# Run the command, save the return status and output,
 	# and don't fail, no matter what the return status is!
-	if ASSERTCMDOUTPUT="$(echo "$cmd" | sh -s)"; then
+	if ASSERTCMDOUTPUT="$(printf '%s' "$cmd" | sh -s)"; then
 		local status="$?"  # ok
 	else
 		local status="$?"  # also ok
 	fi
 
-	[ -n "$verbose" ] && echo "$ASSERTCMDOUTPUT"
+	[ -n "$verbose" ] && printf '%s\n' "$ASSERTCMDOUTPUT"
 
 	# The command might possibly have run a subshell (see prepare_subshell).
 	# In this case, it will have run its own assertions,
