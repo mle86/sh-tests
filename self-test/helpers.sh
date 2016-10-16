@@ -74,16 +74,16 @@ test_cmd () {
 }
 
 # test_assertion OP COMMAND...
-#  The optional envvar $actual will be the assertion's first argument if set.
-#  The optional envvar $expected will be the assertion's second argument if set.
-#  The optional envvar $errmsg will be the assertion's last argument if set.
-#  The envvars $actual/$expected/$errmsg will ONLY be appended to the assertion command
+#  The optional envvar $t_actual will be the assertion's first argument if set.
+#  The optional envvar $t_expected will be the assertion's second argument if set.
+#  The optional envvar $t_errmsg will be the assertion's last argument if set.
+#  The envvars $t_actual/$t_expected/$t_errmsg will ONLY be appended to the assertion command
 #   if there's only one COMMAND argument, but no literal arguments to pass to the command.
-#   This is done so that regular $actual/$expected/$errmsg arguments can be passed
+#   This is done so that regular $t_actual/$t_expected/$t_errmsg arguments can be passed
 #   to the command automatically, while special arguments (like the empty string)
 #   can still be passed to the command explicitly.
 #  OP="pass"  expect that the assertion returns with zero status and has no stderr output.
-#  OP="fail"  expect that the assertion exits with non-zero status and includes $actual, $expected, and $errmsg in its stderr output.
+#  OP="fail"  expect that the assertion exits with non-zero status and includes $t_actual, $t_expected, and $t_errmsg in its stderr output.
 #  This function assumes that working err() and assertContains() functions are available.
 #  This function prints error messages on stderr and returns a non-zero status if OP is not met,
 #   but it won't call exit().
@@ -101,6 +101,7 @@ test_assertion () {
 	fi
 
 	if [ "$op" = "pass" ]; then
+		# We expect the assertion to return with zero status and without any stderr output.
 		if ! stderr_output="$(eval test_cmd 'cont' $assertcmd 2>&1 >/dev/null)"; then
 			err "False-negative: Successful $assertion did not return with a zero status!"
 			err "(Assertion error output: $(_reformat_error "$stderr_output"))"
@@ -112,6 +113,7 @@ test_assertion () {
 			return 4
 		fi
 	else
+		# We expect the assertion to fail (non-zero status, $t_actual+$t_expected+$t_errmsg contained in stderr output).
 		if ! stderr_output="$(eval test_cmd 'fail' $assertcmd 2>&1 >/dev/null)"; then
 			err "False-positive: Failed $assertion did not exit with a non-zero status!"
 			return 2
