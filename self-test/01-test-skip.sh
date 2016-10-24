@@ -6,7 +6,8 @@ set -e
 # without aborting the test script.
 
 expectSt=0
-expectMsg="foo19094858435"
+expectMsg='foo19094858435\''0fin'
+partialMsg='foo19094858435'
 
 sentinel="ZZZZZZZZZZZZZZZZZZ3413871920982Z"
 status=0
@@ -31,6 +32,10 @@ fi
 
 case "$output" in
 	*"$expectMsg"*)
+		;;
+	*"$partialMsg"*)
+		printf '%s\n' "skip() exited, but terminated the error message after a literal \"\\0\"!"  >&2
+		exit 1
 		;;
 	*)
 		echo "skip() exited, but did not show expected message '$expectMsg'!"  >&2

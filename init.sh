@@ -105,7 +105,7 @@ success () {
 #  This function stops the test script execution, but exits with success status.
 #  Also, the abort message is not printed in red (the "error color"), but in yellow.
 skip () {
-	[ -n "$1" ] && echo "${color_skip}""$@""${color_normal}"  >&2
+	[ -n "$1" ] && printf '%s\n' "${color_skip}""$*""${color_normal}"  >&2
 	echo "${color_skip}Skipped: ${TESTNAME}${color_normal}"  >&2
 	cleanup
 	exit 0
