@@ -88,6 +88,13 @@ exiting with a return status of 99.
 	This assertion compares two strings,
 	expecting the second to be contained somewhere in the first.
 
+* `assertRegex valueActual regex [errorMessage]`  
+	This assertion checks whether the *regex* (PCRE regular expression)
+	matches the *valueActual* string.
+	The regex argument must be enclosed by slashes,
+	can start with a '`!`' to negate the matching sense,
+	and can end with `i`/`m`/`s` modifier(s).
+
 * `assertEmpty valueActual [errorMessage]`  
 	This assertion tests a string, expecting it to be empty.
 

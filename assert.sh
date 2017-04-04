@@ -134,6 +134,44 @@ assertContains () {
 	esac
 }
 
+# assertRegex valueActual regex [errorMessage]
+#  This assertion checks whether the regex (PCRE regular expression)
+#  matches the valueActual string.
+#  The regex argument must be enclosed by slashes,
+#  can start with a '!' to negate the matching sense,
+#  and can end with i/m/s modifier(s).
+assertRegex () {
+	local valueActual="$1"
+	local valueRegex="$2"
+	local errorMessage="${3:-"Regex assertion failed!"}"
+	local inverse=
+	local modifiers=
+
+	local regex="${valueRegex#!}"
+	if [ "$regex" != "$valueRegex" ]; then
+		inverse="!"
+	fi
+
+	local modifiers="${regex##*/}"
+	case "$modifiers" in
+		*[!ism]*)
+			err "Illegal regex modifiers: /$modifiers"
+			abort
+			;;
+	esac
+
+	regex="${regex#/}"
+	regex="${regex%/*}"
+
+	if perl -e "(\$_, \$regex) = @ARGV; exit ! $inverse m/\$regex/$modifiers" "$valueActual" "$regex"; then
+		true  # ok
+	else
+		err "$errorMessage"
+		err "(Regex $valueRegex does not match '$valueActual')"
+		abort
+	fi
+}
+
 # assertEmpty valueActual [errorMessage]
 #  This assertion tests a string, expecting it to be empty.
 assertEmpty () {
