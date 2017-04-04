@@ -60,5 +60,11 @@ t_expected='/^string/m'			test_assertion 'pass'  assertRegex
 t_expected='!/subject.+string/'		test_assertion 'pass'  assertRegex
 t_expected='/subject.+string/s'		test_assertion 'pass'  assertRegex
 
+# complex patterns:
+t_actual="This is our test subject string!"
+t_expected='/our +(?:test|nice) +subject/'		test_assertion 'pass' assertRegex
+t_expected='/our +(?:fake|nice) +subject/'		test_assertion  'fail' assertRegex
+t_expected='/test ([Ss])ubject \1tring\b/'		test_assertion 'pass' assertRegex
+
 
 success
