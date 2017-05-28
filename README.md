@@ -182,14 +182,14 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 * `cd_tmpdir`  
 	Creates a temporary directory to work in and changes into it.
-	(Also changes *ERRCOND* to point into the new directory, so we don't clutter the test root with them.)
+	(Also changes *$ERRCOND* to point into the new directory, so we don't clutter the test root with them.)
 	Use this if your test script wants to create some files/directories.
 	The temporary directory will be automatically removed when the test script ends,
 	provided it is empty.
 
 * `prepare_subshell`  
-	Prepares a subshell script and points the TMPSH and SHELL env vars to it.
-	The subshell will always have *IN_SUBSHELL=yes* set
+	Prepares a subshell script and points the *$TMPSH* and *$SHELL* env vars to it.
+	The subshell will always have *$IN_SUBSHELL=yes* set
 	and will always source the assert.sh and config.sh files (if present).
 	It can use all assertion functions, including *fail()*,
 	but should not need to use *success()* or *cleanup()*.
@@ -197,7 +197,7 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 	See "[Using subshells](#using-subshells)".
 
 * `add_cleanup filename...`  
-	Adds one or more filenames to the $CLEANUP_FILES list.
+	Adds one or more filenames to the *$CLEANUP_FILES* list.
 	Use this if your test script creates files in the temporary directory
 	which should be automatically deleted as soon as the test script ends.
 	Be careful, they'll be deleted with "rm -fd" and must not contain spaces.
@@ -225,7 +225,7 @@ and append its *stdin* input.
 
 Initialization done by all subshell scripts created by *prepare_subshell()*:
 
-1. Sets env var *IN_SUBSHELL=yes*,
+1. Sets env var *$IN_SUBSHELL=yes*,
 1. creates a randomized marker file so that *assertSubshellWasExecuted()* will succeed,
 1. includes the *assert.sh* script so that all assertion functions are available, as well as *fail()* and *err()*,
 1. redefines *cleanup()* and *success()*, as they should not do anything inside a subshell,
