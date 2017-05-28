@@ -46,7 +46,7 @@ but symlinks to them work fine.
 
 (*init.sh* must be sourced from the test script to be able to define new variables and functions.
 In some shells, e.g. *dash*, sourced scripts have no way of knowing their own path,
-so they cannot call other files in the same directory --
+so they cannot call other files in the same directory –
 unless of course they can rely on their caller living in the same directory,
 in which case they can get that directory from `$0`.)
 
@@ -58,7 +58,7 @@ which should be lexicographic order.
 It aborts immediately if one of the test script fails.
 If all test scripts were run successfully,
 it prints a green
-"All tests executed successfully"
+“All tests executed successfully”
 line and ends.
 
 
@@ -70,54 +70,54 @@ If they fail, they will print an error message detailing the failure
 and abort the test script,
 exiting with a return status of 99.
 
-* `assertCmd [-v] command [expectedReturnStatus=0]`  
+* <code><b>assertCmd</b> [-v] command [expectedReturnStatus=0]</code>  
 	Tries to run a command and checks its return status.
 	The command's *stdout* output will be saved in *$ASSERTCMDOUTPUT*,
 	and won't be visible (unless the *-v* option is present).
 	The command's *stderr* output will NOT be redirected.
 	*expectedReturnStatus* can be any number (0..255),
-	or the special value '*any*', in which case
+	or the special value `any`, in which case
 	all return status values will be accepted
 	(except 126 and 127, those are still considered a failure,
 	because they usually signify a [shell command invocation error](http://www.tldp.org/LDP/abs/html/exitcodes.html)).
 
-* `assertEq valueActual valueExpected [errorMessage]`  
+* <code><b>assertEq</b> valueActual valueExpected [errorMessage]</code>  
 	This assertion compares two strings and tests them for equality.
 
-* `assertContains valueActual valueExpectedPart [errorMessage]`  
+* <code><b>assertContains</b> valueActual valueExpectedPart [errorMessage]</code>  
 	This assertion compares two strings,
 	expecting the second to be contained somewhere in the first.
 
-* `assertRegex valueActual regex [errorMessage]`  
+* <code><b>assertRegex</b> valueActual regex [errorMessage]</code>  
 	This assertion checks whether the *regex* (PCRE regular expression)
 	matches the *valueActual* string.
 	The regex argument must be enclosed by slashes,
-	can start with a '`!`' to negate the matching sense,
+	can start with a `!` to negate the matching sense,
 	and can end with `i`/`m`/`s` modifier(s).
 
-* `assertEmpty valueActual [errorMessage]`  
+* <code><b>assertEmpty</b> valueActual [errorMessage]</code>  
 	This assertion tests a string, expecting it to be empty.
 
-* `assertCmdEq command expectedOutput [errorMessage]`  
+* <code><b>assertCmdEq</b> command expectedOutput [errorMessage]</code>  
 	This assertion is a combination of *assertCmd*+*assertEq*.
 	It executes a command, then compares its entire *stdout* output against *expectedOutput*.
 	The command is expected to always have a return status of zero.
 
-* `assertCmdEmpty command [errorMessage]`  
+* <code><b>assertCmdEmpty</b> command [errorMessage]</code>  
 	This assertion is a combination of *assertCmd*+*assertEmpty*.
 	It executes a command, then compares its entire *stdout* output against the empty string.
 	The command is expected to always have a return status of zero.
 
-* `assertFileSize fileName expectedSize [errorMessage]`  
+* <code><b>assertFileSize</b> fileName expectedSize [errorMessage]</code>  
 	This assertion checks than a file exists and compares its total size (in bytes) against *expectedSize*.
 
-* `assertFileMode fileName expectedOctalMode [errorMessage]`  
+* <code><b>assertFileMode</b> fileName expectedOctalMode [errorMessage]</code>  
 	This assertion checks that a file exists and compares its octal access mode
-	(as printed by '*stat -c %a*', e.g. '*755*')
+	(as printed by “*stat -c %a*”, e.g. *755*)
 	against *expectedOctalMode*.
 
-* `assertSubshellWasExecuted [errorMessage]`  
-	This assertion checks whether the last subshell script created via *prepare_subshell()* has been executed.
+* <code><b>assertSubshellWasExecuted</b> [errorMessage]</code>  
+	This assertion checks whether the last subshell script created via *prepare\_subshell()* has been executed.
 	It does so by checking the existence of the marker file which the subshell script should have created.
 
 
@@ -154,53 +154,53 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 *init.sh* also provides these helper functions:
 
-* `success`  
-	This function prints a green "*Success: $TESTNAME*" line,
+* <code><b>success</b></code>  
+	This function prints a green “*Success: $TESTNAME*” line,
 	performs some cleanup,
 	and ends the test script with exit status zero.
 	Call it at the end of every test script!
 
-* `fail errorMessage`  
+* <code><b>fail</b> errorMessage</code>  
 	This function prints an error message in red on *stderr*,
 	performs some cleanup,
 	and ends the test script with exit status 99.
 	This can be used for one-line mini-assertions:  
 	`[ -x binfile ] || fail "binfile not found or not executable!"`
 
-* `err errorMessage`  
+* <code><b>err</b> errorMessage</code>  
 	This function prints an error message in red on *stderr*
 	(like *fail()*),
 	but does NOT abort the test script.
 	Use it if you want to print multi-line error messages before calling *fail()*.
 
-* `skip [errorMessage]`  
+* <code><b>skip</b> [errorMessage]</code>  
 	This function prints an error message in yellow on *stderr*
 	and stops the test script,
 	but with exit status zero (success).
 	Use this, for example, if a precondition of your test script was not met
 	and you don't consider that an actual test failure.
 
-* `cd_tmpdir`  
+* <code><b>cd\_tmpdir</b></code>  
 	Creates a temporary directory to work in and changes into it.
 	(Also changes *$ERRCOND* to point into the new directory, so we don't clutter the test root with them.)
 	Use this if your test script wants to create some files/directories.
 	The temporary directory will be automatically removed when the test script ends,
 	provided it is empty.
 
-* `prepare_subshell`  
+* <code><b>prepare\_subshell</b></code>  
 	Prepares a subshell script and points the *$TMPSH* and *$SHELL* env vars to it.
-	The subshell will always have *$IN_SUBSHELL=yes* set
+	The subshell will always have *$IN\_SUBSHELL=yes* set
 	and will always source the assert.sh and config.sh files (if present).
 	It can use all assertion functions, including *fail()*,
 	but should not need to use *success()* or *cleanup()*.
 	Pipe the subshell script contents to this function.  
-	See "[Using subshells](#using-subshells)".
+	See “[Using subshells](#using-subshells)”.
 
-* `add_cleanup filename...`  
-	Adds one or more filenames to the *$CLEANUP_FILES* list.
+* <code><b>add\_cleanup</b> filename...</code>  
+	Adds one or more filenames to the *$CLEANUP\_FILES* list.
 	Use this if your test script creates files in the temporary directory
 	which should be automatically deleted as soon as the test script ends.
-	Be careful, they'll be deleted with "rm -fd" and must not contain spaces.
+	Be careful, they'll be deleted with “rm -fd” and must not contain spaces.
 
 
 # Hook functions
@@ -208,7 +208,7 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 All available hook functions are empty stub functions defined in *init.sh*.
 Override them in your test script or in your *config.sh* as necessary.
 
-* **hook_cleanup()**, called on cleanup, i.e. when the test script ends (either because of a failed assertion or because it called *success()*). Use this instead of *add_cleanup()* if your test script needs to do some serious cleanup, especially if it might need to remove files with spaces in their names (which would not be safe for *add_cleanup()*, as its *$CLEANUP_FILES* list is space-delimited).
+* **hook\_cleanup()**, called on cleanup, i.e. when the test script ends (either because of a failed assertion or because it called *success()*). Use this instead of *add\_cleanup()* if your test script needs to do some serious cleanup, especially if it might need to remove files with spaces in their names (which would not be safe for *add\_cleanup()*, as its *$CLEANUP\_FILES* list is space-delimited).
 
 
 # Using subshells
@@ -218,14 +218,14 @@ the usual approach is to have a helper script and supply that as the subcommand.
 If the subcommand script should be able to perform its own *assert.sh* assertions,
 it'll have to include that file by itself (the path is available in the *$ASSERTSH* env var).
 
-The test framework offers the *prepare_subshell()* function to aid this process:
+The test framework offers the *prepare\_subshell()* function to aid this process:
 The function will create a new, randomly-named script file,
 fill it with some initialization calls,
 and append its *stdin* input.
 
-Initialization done by all subshell scripts created by *prepare_subshell()*:
+Initialization done by all subshell scripts created by *prepare\_subshell()*:
 
-1. Sets env var *$IN_SUBSHELL=yes*,
+1. Sets env var *$IN\_SUBSHELL=yes*,
 1. creates a randomized marker file so that *assertSubshellWasExecuted()* will succeed,
 1. includes the *assert.sh* script so that all assertion functions are available, as well as *fail()* and *err()*,
 1. redefines *cleanup()* and *success()*, as they should not do anything inside a subshell,
@@ -234,7 +234,7 @@ Initialization done by all subshell scripts created by *prepare_subshell()*:
 The filname of the new script file is stored in the *$TMPSH* and *$SHELL* env vars.
 This can be useful to test commands which don't take a subcommand argument but simply start a new interactive shell.
 
-*prepare_subshell()* requires a prior *cd_tmpdir()* call,
+*prepare\_subshell()* requires a prior *cd\_tmpdir()* call,
 because it'll refuse to create the subshell script in the test root.
 
 
