@@ -8,8 +8,13 @@ cd "$(readlink -f "$(dirname "$0")")"  # change to test directory
 test_file_pattern='??-test-*.sh'
 test_files="$(find . -maxdepth 1 -type f -name "$test_file_pattern" | sort)"
 
-for testsh in ${test_files:-$test_file_pattern}; do  # run all tests in filename order
-	$testsh
+if [ -z "$test_files" ]; then
+	echo "$0: no test scripts (${test_file_pattern})" >&2
+	exit 1
+fi
+
+for testsh in $test_files; do  # run all tests
+	./$testsh
 done
 
 . ./assert.sh  # just for the color_ constants
