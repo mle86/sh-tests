@@ -119,11 +119,11 @@ cleanup () {
 	# (or better, add them to the CLEANUP_FILES list).
 
 	hook_cleanup
-	[ -n "$TMPSH"   -a -f "$TMPSH"   ] && rm --one-file-system -v   -- "$TMPSH"
-	[ -n "$ERRCOND" -a -f "$ERRCOND" ] && rm --one-file-system -v   -- "$ERRCOND"
-	[ -n "$CLEANUP_FILES"            ] && rm --one-file-system -vfd -- $CLEANUP_FILES
+	[ -n "$TMPSH"   ] && [ -f "$TMPSH"   ] && rm --one-file-system -v   -- "$TMPSH"
+	[ -n "$ERRCOND" ] && [ -f "$ERRCOND" ] && rm --one-file-system -v   -- "$ERRCOND"
+	[ -n "$CLEANUP_FILES"                ] && rm --one-file-system -vfd -- $CLEANUP_FILES
 
-	[ -n "$DIR" -a -d "$DIR" ] && rm --one-file-system -vd -- "$DIR"
+	[ -n "$DIR" ] && [ -d "$DIR" ] && rm --one-file-system -vd -- "$DIR"
 
 	:;  # if none of the previous conditions was true, this function should still succeed
 }

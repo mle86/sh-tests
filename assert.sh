@@ -24,7 +24,7 @@ color_normal='[0m'
 #  But if this is called from a subshell, we should signal the error condition to the test script running outside!
 #  This function should not be called manually -- use fail() instead.
 abort () {
-	[ -n "$IN_SUBSHELL" -a -n "$ERRCOND" ] && touch $ERRCOND  # signal the error condition back to the test script
+	[ -n "$IN_SUBSHELL" ] && [ -n "$ERRCOND" ] && touch $ERRCOND  # signal the error condition back to the test script
 	cleanup
 	exit $EXIT_ASSERT
 }
@@ -80,7 +80,7 @@ assertCmd () {
 	# The command might possibly have run a subshell (see prepare_subshell).
 	# In this case, it will have run its own assertions,
 	# so now we have to check if the error condition file has been created.
-	if [ -n "$ERRCOND" -a -f "$ERRCOND" ]; then
+	if [ -n "$ERRCOND" ] && [ -f "$ERRCOND" ]; then
 		# The error condition file exists!
 		# We'll assume that the assertion that caused this
 		# has already printed an error message, so we'll abort silently.
@@ -92,7 +92,9 @@ assertCmd () {
 	if [ "$expectedReturnStatus" = "any" ]; then
 		# "any" means to accept all return status values -- except 126 and 127,
 		# those come from the shell, usually due to an invalid command.
-		[ "$status" -eq 126 -o "$status" -eq 127 ] && isStatusError=yes
+		if [ "$status" -eq 126 ] || [ "$status" -eq 127 ]; then
+			isStatusError=yes
+		fi
 	elif [ "$status" -ne "$expectedReturnStatus" ]; then
 		# status mismatch
 		isStatusError=yes
