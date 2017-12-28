@@ -57,7 +57,7 @@ The files are run in lexicographic order.
 It aborts immediately if one of the test script fails.
 If all test scripts were run successfully,
 it prints a green
-“All tests executed successfully”
+“All _N_ tests executed successfully”
 line and ends.
 
 

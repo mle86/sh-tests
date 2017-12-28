@@ -13,12 +13,15 @@ if [ -z "$test_files" ]; then
 	exit 1
 fi
 
+# count test scripts
+n_tests="$(printf '%s' "$test_files" | wc -l)"
+
 for testsh in $test_files; do  # run all tests
 	./$testsh
 done
 
 . ./assert.sh  # just for the color_ constants
 echo "${color_success}"
-echo "All tests executed successfully."
+echo "All ${n_tests} tests executed successfully."
 echo "${color_normal}"
 
