@@ -53,8 +53,7 @@ in which case they can get that directory from `$0`.)
 The *[run-all-tests.sh](run-all-tests.sh)* script executes all files in the script's directory
 that match the filename pattern
 `??-test-*.sh`.
-The files are run in whichever order the shell glob expansion returns,
-which should be lexicographic order.  
+The files are run in lexicographic order.  
 It aborts immediately if one of the test script fails.
 If all test scripts were run successfully,
 it prints a green
