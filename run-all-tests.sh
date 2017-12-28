@@ -14,7 +14,7 @@ if [ -z "$test_files" ]; then
 fi
 
 # count test scripts
-n_tests="$(printf '%s' "$test_files" | wc -l)"
+n_tests="$(printf '%s' "$test_files" | grep -c -F '')"
 
 for testsh in $test_files; do  # run all tests
 	./$testsh
