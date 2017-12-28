@@ -9,7 +9,7 @@ test_file_pattern='??-test-*.sh'
 test_files="$(find . -maxdepth 1 -type f -name "$test_file_pattern" | sort)"
 
 if [ -z "$test_files" ]; then
-	printf '%s: no test scripts (%s)\n' "$0" "$test_file_pattern" >&2
+	printf '%s: no test scripts (%s)\n' "$0" "$test_file_pattern"  >&2
 	exit 1
 fi
 

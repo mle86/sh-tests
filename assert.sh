@@ -33,7 +33,7 @@ abort () {
 #  This function prints an error message on stderr, but does not abort the test script execution.
 #  Use it for multi-line error messages; otherwise, use fail(), as it also aborts the test script.
 err () {
-	printf '%s\n' "${color_error}""$*""${color_normal}" >&2
+	printf '%s\n' "${color_error}""$*""${color_normal}"  >&2
 }
 
 # fail errorMessage
