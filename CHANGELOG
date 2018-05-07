@@ -1,4 +1,4 @@
-next, 2017-12-28
+v1.4.0, 2018-05-07
 	- improved run-all-tests status output
 	- Travis CI
 
