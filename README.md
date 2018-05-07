@@ -1,5 +1,7 @@
 # sh-tests
 
+[![Build Status](https://travis-ci.org/mle86/sh-tests.svg?branch=master)](https://travis-ci.org/mle86/sh-tests)
+
 This is a shell-based test framework.
 It's mostly useful for projects written in a language without native unit test support (like other shell scripts)
 or for tiny projects for which an entire unit test framework would be overkill.
