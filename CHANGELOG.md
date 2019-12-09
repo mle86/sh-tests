@@ -3,6 +3,7 @@
 
 #### v1.5.0, 2019-11
 
+- show number of assertions at test end
 - added addAssertionCount() helper fn
 
 #### v1.4.0, 2018-05-07

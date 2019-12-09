@@ -96,7 +96,13 @@ success () {
 	# This should be called at the end of every test script
 	# to signal the successful test to the user.
 
-	echo "${color_success}Success: ${TESTNAME}${color_normal}"
+	if [ "$ASSERTCNT" = "0" ]; then counter_info="no assertions"
+	elif [ "$ASSERTCNT" = "1" ]; then counter_info="1 assertion"
+	else counter_info="$ASSERTCNT assertions";
+	fi
+
+	printf "%sSuccess: %s%s (%s)\n" \
+		"$color_success" "$TESTNAME" "$color_normal" "$counter_info"
 	cleanup
 	exit 0
 }
