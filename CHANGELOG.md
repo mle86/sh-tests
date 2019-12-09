@@ -1,6 +1,10 @@
 # sh-tests Changelog
 
 
+#### v1.5.0, 2019-11
+
+- added addAssertionCount() helper fn
+
 #### v1.4.0, 2018-05-07
 
 - improved run-all-tests status output

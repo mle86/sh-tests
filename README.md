@@ -152,6 +152,7 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 * **$ASSERTCNT**, the number of assertions performed so far.
     Starts at zero.
+    Can be changed manually or with [addAssertionCount()](#helper-functions).
 
 
 # Helper functions
@@ -205,6 +206,12 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 	Use this if your test script creates files in the temporary directory
 	which should be automatically deleted as soon as the test script ends.
 	Be careful, they'll be deleted with “rm -fd” and must not contain spaces.
+
+* <code><b>addAssertionCount</b> [count]</code>  
+        Adds a number to the *$ASSERTCNT* env var.
+        The default number argument is `+1`.
+        The argument may be negative.
+        This may be useful if you want to implement custom assertion functions.
 
 
 # Hook functions

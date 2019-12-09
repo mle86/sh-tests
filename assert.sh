@@ -103,7 +103,7 @@ assertCmd () {
 		isStatusError=yes
 	fi
 
-	ASSERTCNT="$((ASSERTCNT + 1))"
+	addAssertionCount
 	if [ -n "$isStatusError" ]; then
 		err "Command '$cmd' was not executed successfully!"
 		err "(Expected return status: $expectedReturnStatus, Actual: $status)"
@@ -117,7 +117,7 @@ assertEq () {
 	local valueActual="$1"
 	local valueExpected="$2"
 	local errorMessage="${3:-"Equality assertion failed!"}"
-	ASSERTCNT="$((ASSERTCNT + 1))"
+	addAssertionCount
 	if [ "$valueActual" != "$valueExpected" ]; then
 		err "$errorMessage"
 		err "(Expected: '$valueExpected', Actual: '$valueActual')"
@@ -132,7 +132,7 @@ assertContains () {
 	local valueActual="$1"
 	local valueExpectedPart="$2"
 	local errorMessage="${3:-"Substring assertion failed!"}"
-	ASSERTCNT="$((ASSERTCNT + 1))"
+	addAssertionCount
 	case "$valueActual" in
 		*"$valueExpectedPart"*) true ;;  # ok
 		*)
@@ -171,7 +171,7 @@ assertRegex () {
 	regex="${regex#/}"
 	regex="${regex%/*}"
 
-	ASSERTCNT="$((ASSERTCNT + 1))"
+	addAssertionCount
 	if perl -e "(\$_, \$regex) = @ARGV; exit ! $inverse m/\$regex/$modifiers" "$valueActual" "$regex"; then
 		true  # ok
 	else
@@ -200,7 +200,7 @@ assertCmdEq () {
 
 	assertCmd "$cmd" 0  # run cmd, check success return status
 	assertEq "$ASSERTCMDOUTPUT" "$expectedOutput" "$errorMessage"  # compare output
-	ASSERTCNT="$((ASSERTCNT - 1))"
+	addAssertionCount -1
 }
 
 # assertCmdEmpty command [errorMessage]
@@ -243,7 +243,14 @@ assertSubshellWasExecuted () {
 	local errorMessage="${1:-"Subshell script was not executed! (Marker file not found.)"}"
 	[ -n "$SUBSHELL_MARKER" ] || fail "Could not check subshell execution, prepare_subshell() was not used"
 	[ -e "$SUBSHELL_MARKER" ] || fail "$errorMessage"
-	ASSERTCNT="$((ASSERTCNT + 1))"
+	addAssertionCount
 	:;
+}
+
+# addAssertionCount [+1]
+#  Modifies the $ASSERTCNT counter var by the argument.
+#  Most assertions use this internally to increase $ASSERTCNT by 1.
+addAssertionCount () {
+	ASSERTCNT="$((ASSERTCNT + ${1:-1}))"
 }
 
