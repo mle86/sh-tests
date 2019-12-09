@@ -5,10 +5,6 @@
 # and whether addAssertionCount() works correctly.
 
 
-[ "$ASSERTCNT" = "0" ] || fail \
-	"After initializing a test script, \$ASSERTCNT was not set to zero!  (Actual value: '$ASSERTCNT')"
-
-
 # testAssertionIncr assertionCommand...
 testAssertionIncr () {
 	local currentCnt="$ASSERTCNT"
