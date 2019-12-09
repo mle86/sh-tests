@@ -10,6 +10,9 @@ EXIT_ASSERT=99
 # The stdout output of the last assertCmd() command.
 ASSERTCMDOUTPUT=
 
+# The number of assertions that have been run.
+ASSERTCNT=0
+
 # ANSI color constants. Used by init.sh functions too.
 color_info='[1;37m'
 color_success='[1;32m'
@@ -100,6 +103,7 @@ assertCmd () {
 		isStatusError=yes
 	fi
 
+	ASSERTCNT="$((ASSERTCNT + 1))"
 	if [ -n "$isStatusError" ]; then
 		err "Command '$cmd' was not executed successfully!"
 		err "(Expected return status: $expectedReturnStatus, Actual: $status)"
@@ -113,6 +117,7 @@ assertEq () {
 	local valueActual="$1"
 	local valueExpected="$2"
 	local errorMessage="${3:-"Equality assertion failed!"}"
+	ASSERTCNT="$((ASSERTCNT + 1))"
 	if [ "$valueActual" != "$valueExpected" ]; then
 		err "$errorMessage"
 		err "(Expected: '$valueExpected', Actual: '$valueActual')"
@@ -127,6 +132,7 @@ assertContains () {
 	local valueActual="$1"
 	local valueExpectedPart="$2"
 	local errorMessage="${3:-"Substring assertion failed!"}"
+	ASSERTCNT="$((ASSERTCNT + 1))"
 	case "$valueActual" in
 		*"$valueExpectedPart"*) true ;;  # ok
 		*)
@@ -165,6 +171,7 @@ assertRegex () {
 	regex="${regex#/}"
 	regex="${regex%/*}"
 
+	ASSERTCNT="$((ASSERTCNT + 1))"
 	if perl -e "(\$_, \$regex) = @ARGV; exit ! $inverse m/\$regex/$modifiers" "$valueActual" "$regex"; then
 		true  # ok
 	else
@@ -193,6 +200,7 @@ assertCmdEq () {
 
 	assertCmd "$cmd" 0  # run cmd, check success return status
 	assertEq "$ASSERTCMDOUTPUT" "$expectedOutput" "$errorMessage"  # compare output
+	ASSERTCNT="$((ASSERTCNT - 1))"
 }
 
 # assertCmdEmpty command [errorMessage]
@@ -235,6 +243,7 @@ assertSubshellWasExecuted () {
 	local errorMessage="${1:-"Subshell script was not executed! (Marker file not found.)"}"
 	[ -n "$SUBSHELL_MARKER" ] || fail "Could not check subshell execution, prepare_subshell() was not used"
 	[ -e "$SUBSHELL_MARKER" ] || fail "$errorMessage"
+	ASSERTCNT="$((ASSERTCNT + 1))"
 	:;
 }
 

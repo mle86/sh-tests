@@ -150,6 +150,9 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 
 * **$ASSERTSH**, the full path of the *assert.sh* script file, which has already been sourced by *init.sh*.
 
+* **$ASSERTCNT**, the number of assertions performed so far.
+    Starts at zero.
+
 
 # Helper functions
 
