@@ -49,5 +49,24 @@ testCounterAdd "$((ASSERTCNT + 3))" +3
 testCounterAdd "$((ASSERTCNT - 2))" -2
 testCounterAdd "$((ASSERTCNT    ))" 0
 
+oldCnt="$ASSERTCNT"
+SKIP_ASSERTCNT=yes ; assertEq "foo" "foo" ; SKIP_ASSERTCNT=
+assertEq "$oldCnt" "$ASSERTCNT" \
+	"A built-in assertion changed \$ASSERTCNT despite \$SKIP_ASSERTCNT being set!"
+
+oldCnt="$ASSERTCNT"
+SKIP_ASSERTCNT=yes ; addAssertionCount +7 ; SKIP_ASSERTCNT=
+assertEq "$oldCnt" "$ASSERTCNT" \
+	"addAssertionCount() changed \$ASSERTCNT despite \$SKIP_ASSERTCNT being set!"
+
+customAssertion () {
+	addAssertionCount +1
+	local SKIP_ASSERTCNT=yes
+	assertEq "foo" "foo"
+	assertEq "bar" "bar"
+	assertEq "zog" "zog"
+}
+testAssertionIncr customAssertion
+
 
 success

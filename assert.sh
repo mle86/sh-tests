@@ -13,6 +13,9 @@ ASSERTCMDOUTPUT=
 # The number of assertions that have been run.
 ASSERTCNT=0
 
+# If this contains a non-empty value, addAssertionCount() will have no effect.
+SKIP_ASSERTCNT=
+
 # ANSI color constants. Used by init.sh functions too.
 color_info='[1;37m'
 color_success='[1;32m'
@@ -251,6 +254,7 @@ assertSubshellWasExecuted () {
 #  Modifies the $ASSERTCNT counter var by the argument.
 #  Most assertions use this internally to increase $ASSERTCNT by 1.
 addAssertionCount () {
+	[ "$SKIP_ASSERTCNT" ] && return # nop
 	ASSERTCNT="$((ASSERTCNT + ${1:-1}))"
 }
 

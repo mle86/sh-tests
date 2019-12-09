@@ -135,6 +135,52 @@ If most of your tests run the same binary,
 it might be handy to define a variable with the binary's path in the *config.sh* file.
 
 
+# Writing custom assertions
+
+You can easily build new assertion functions
+which may of course use framework assertions functions
+and/or shell built-ins
+and/or the framework's helper functions such as *fail()*.
+
+If you use them in one test script only, put them there;
+if several of your test scripts use them,
+put them in your project's [config.sh](#project-configuration) file.
+
+#### Assertion counter
+
+All assertion functions provided by this framework
+increase the *$ASSERTCNT* variable by 1.
+
+So if a custom assertion function
+only calls one framework assertion,
+the counter will be correct.
+
+In all other cases you may use
+the [addAssertionCount()](#helper-functions) helper function
+to correct to counter.
+
+Alternatively,
+set the *SKIP\_ASSERTCNT* variable
+to some non-empty value;
+it will disable *addAssertionCount()* completely,
+even for the framework-provided assertions.
+
+#### Example
+
+```bash
+assertAbsolutePathExists () {
+    addAssertionCount +1
+    local SKIP_ASSERTCNT=yes  # this prevents builtin assertions from increasing $ASSERTCNT.
+    assertRegex "$1" "/^\//" \
+        "The argument is not an absolute path."
+    assertRegex "$1" "!/\/\.\.?\//" \
+        "The argument is not a canonical path as it contains '.' or '..' components."
+    [ -e "$1" ] || fail \
+        "Path does not exist: '$1'"
+}
+```
+
+
 # Helper variables
 
 *init.sh* also provides these environment variables:
@@ -153,6 +199,10 @@ it might be handy to define a variable with the binary's path in the *config.sh*
 * **$ASSERTCNT**, the number of assertions performed so far.
     Starts at zero.
     Can be changed manually or with [addAssertionCount()](#helper-functions).
+
+* **$SKIP\_ASSERTCNT**, set to the empty string.
+    You can set this to a non-empty string to prevent addAssertionCount() from doing anything,
+    e.g. inside custom assertions.
 
 
 # Helper functions
