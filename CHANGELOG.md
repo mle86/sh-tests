@@ -1,7 +1,7 @@
 # sh-tests Changelog
 
 
-#### v1.5.0, 2019-11
+#### v1.5.0, 2019-12-09
 
 - show number of assertions at test end
 - added addAssertionCount() helper fn
