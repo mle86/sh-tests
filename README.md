@@ -237,7 +237,6 @@ assertAbsolutePathExists () {
 
 * <code><b>cd\_tmpdir</b></code>  
 	Creates a temporary directory to work in and changes into it.
-	(Also changes *$ERRCOND* to point into the new directory, so we don't clutter the test root with them.)
 	Use this if your test script wants to create some files/directories.
 	The temporary directory will be automatically removed when the test script ends,
 	provided it is empty.
@@ -288,8 +287,8 @@ Initialization done by all subshell scripts created by *prepare\_subshell()*:
 
 1. Sets env var *$IN\_SUBSHELL=yes*,
 1. creates a randomized marker file so that *assertSubshellWasExecuted()* will succeed,
-1. includes the *assert.sh* script so that all assertion functions are available, as well as *fail()* and *err()*,
-1. redefines *cleanup()* and *success()*, as they should not do anything inside a subshell,
+1. includes the *assert.sh* script so that all assertion functions as well as *fail()* and *err()* are available,
+1. redefines *cleanup()* and *success()* as they should not do anything inside a subshell,
 1. includes the *config.sh* script (if it exists).
 
 The filname of the new script file is stored in the *$TMPSH* and *$SHELL* env vars.
