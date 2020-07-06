@@ -2,11 +2,12 @@
 
 To test a command which runs another command
 the usual approach is to have a helper script and supply that as the subcommand.
-If the subcommand script should be able to perform its own *assert.sh* assertions
-it'll have to include that file by itself (the path is available in the *$ASSERTSH* env var).
+If the subcommand script should be able to perform its own assertions
+it'll have to include the *assert.sh* file by itself
+(its full path is available in the *$ASSERTSH* env var).
 
 The test framework offers the *prepare\_subshell()* function to aid this process:
-The function will create a new, randomly-named script file,
+it will create a new, randomly-named script file,
 fill it with some initialization calls,
 and append its *stdin* input.
 
