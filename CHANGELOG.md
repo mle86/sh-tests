@@ -1,6 +1,11 @@
 # sh-tests Changelog
 
 
+### v1.6.0, 2021-01-15
+
+- MIT license
+- documentation clean-up
+
 #### v1.5.0, 2019-12-09
 
 - show number of assertions at test end
